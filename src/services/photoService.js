@@ -39,16 +39,18 @@ const getPhotos = async (params) => {
                     }
                 }
             })
-            responseData = params?.title 
+            responseData = params && params?.title 
                 ? responseData.filter((photo) => photo.title.includes(params.title)) 
                 : responseData;
-            responseData = params['album.title']
+            responseData = params && params['album.title']
                 ? responseData.filter((photo) => photo.album.title.includes(params['album.title'])) 
                 : responseData;
-            responseData = params['album.user.email']
+            responseData = params && params['album.user.email']
                 ? responseData.filter((photo) => photo.album.user.email === params['album.user.email']) 
                 : responseData;
-            response = { status: 200, data: responseData}
+            const limit = params?.limit ? params.limit : 25;
+            const offset = params?.offset ? params.offset : 0;
+            responseData = responseData.slice(offset, limit);
             response = { status: 200, data: responseData}
         }
     } catch (error) {
