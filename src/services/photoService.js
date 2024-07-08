@@ -1,7 +1,7 @@
 const request = require('./requestService')
 const utils = require('../utils/utils')
 
-const getPhotos = async () => {
+const getPhotos = async (params) => {
     let response = null
     try {
         const PHOTOS_URL = `${process.env.API_URL}/photos`;
@@ -22,7 +22,7 @@ const getPhotos = async () => {
             const photos = photosResponse.data;
             const users = utils.convertToMap(usersResponse.data);
             const albums = utils.convertToMap(albumsResponse.data);
-            responseData = photos.map( (photo) => {
+            let responseData = photos.map( (photo) => {
                 const albumData = albums[photo.albumId];
                 const userData = users[albumData.userId];
                 return {
@@ -39,6 +39,16 @@ const getPhotos = async () => {
                     }
                 }
             })
+            responseData = params?.title 
+                ? responseData.filter((photo) => photo.title.includes(params.title)) 
+                : responseData;
+            responseData = params['album.title']
+                ? responseData.filter((photo) => photo.album.title.includes(params['album.title'])) 
+                : responseData;
+            responseData = params['album.user.email']
+                ? responseData.filter((photo) => photo.album.user.email === params['album.user.email']) 
+                : responseData;
+            response = { status: 200, data: responseData}
             response = { status: 200, data: responseData}
         }
     } catch (error) {

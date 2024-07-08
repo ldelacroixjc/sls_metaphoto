@@ -7,8 +7,7 @@ const getPhotos = async (event, context, callback) => {
     body: JSON.stringify({ message: 'Error Internal Server - Handler' }),
   }
   try {
-    console.log('---parametros---', event.queryStringParameters)
-    const result = await photoService.getPhotos();
+    const result = await photoService.getPhotos(event.queryStringParameters);
     response = {
       statusCode: result.status,
       body: JSON.stringify(result.data)
