@@ -1,0 +1,25 @@
+service: sls-metaphoto-api
+frameworkVersion: "3"
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    ENV: ${file(./config.json):${opt:stage, self:provider.stage, 'dev'}.ENV}
+    NODE_ENV: ${file(./config.json):${opt:stage, self:provider.stage, 'dev'}.NODE_ENV}
+    API_URL: ${file(./config.json):${opt:stage, self:provider.stage, 'dev'}.API_URL}
+
+functions:
+  get-photos:
+    handler: src/handlers/photoHandler.getPhotos
+    events:
+      - http:
+          path: /externalapi/photos
+          method: GET
+          cors: true
+
+package:
+  exclude:
+    - dependencies_layer/**
+    - node_modules/**
+plugins:
+  - serverless-offline

@@ -1,0 +1,12 @@
+{
+  "dev": {
+    "ENV": "dev",
+    "NODE_ENV": "dev",
+    "API_URL": "https://jsonplaceholder.typicode.com"
+  },
+  "prod": {
+    "ENV": "production",
+    "NODE_ENV": "production",
+    "API_URL": "https://jsonplaceholder.typicode.com"
+  }
+}
