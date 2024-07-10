@@ -3,6 +3,11 @@ frameworkVersion: "3"
 provider:
   name: aws
   runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  profile: jc
+  region: us-east-1
+  memorySize: 512
+  timeout: 15
   environment:
     ENV: ${file(./config.json):${opt:stage, self:provider.stage, 'dev'}.ENV}
     NODE_ENV: ${file(./config.json):${opt:stage, self:provider.stage, 'dev'}.NODE_ENV}
